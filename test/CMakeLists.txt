@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 4.0)
 
-project(test)
+project(test VERSION 1.0.0 LANGUAGES C)
 
 # Устанавливаем бинарный выход в папку builds/bin
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/builds/bin)
