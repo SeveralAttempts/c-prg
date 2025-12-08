@@ -9,7 +9,13 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/builds/lib)
 # Устанавливаем выход архивов в папку builds/lib
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/builds/lib)
 
-add_executable(${PROJECT_NAME} main.c)
+add_executable(${PROJECT_NAME} 
+    main.c 
+    ./utils/result.c 
+    ./utils/result.h
+    ./game_engine/engine.h
+    ./game_engine/engine.c
+)
 
 # Опционально: настраиваем стандарт C
 set(CMAKE_C_STANDARD 23)
