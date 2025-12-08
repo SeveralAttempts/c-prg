@@ -2,7 +2,11 @@
 #define ENGINE_H
 
 #include "../utils/result.h"
+#include "../utils/input.h"
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 typedef struct 
 {
@@ -32,6 +36,7 @@ result draw_left_player(court *court);
 result draw_right_player(court *court);
 result court_field_create(court *court);
 void update(court *court);
+void move_bat(char key, court *court);
 
 #endif // ENGINE_H 
 

@@ -15,6 +15,8 @@ add_executable(${PROJECT_NAME}
     ./utils/result.h
     ./game_engine/engine.h
     ./game_engine/engine.c
+    ./utils/input.h
+    ./utils/input.c
 )
 
 # Опционально: настраиваем стандарт C
