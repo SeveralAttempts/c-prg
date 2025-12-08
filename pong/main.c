@@ -9,8 +9,8 @@ int main(int argc, char *argv[])
     court.width = 150;
     court.height = 35;
     court.player_bars_length = 5;
-    court.left_player_pos = 4;
-    court.right_player_pos = 47;
+    court.left_player_pos = court.height / 2;
+    court.right_player_pos = court.height / 2;
     court.ball_pos.x = court.width / 2;
     court.ball_pos.y = court.height / 2;
     court.ball_pos.is_left = true;
