@@ -15,8 +15,10 @@ result draw_left_player(court *court) {
         court->court_field[i][0] = '#';
     }
 
-    court->court_field[court->left_player_pos][0] = '|';
-
+    for (int i = 0; i < court->player_bars_length; ++i) {
+        court->court_field[court->left_player_pos + i][0] = '|';
+    }
+    
     res.code = OK;
     return res;
 }
@@ -29,8 +31,9 @@ result draw_right_player(court *court) {
         court->court_field[i][court->width - 1] = '#';
     }
 
-    court->court_field[court->right_player_pos][court->width - 1] = '|';
-
+    for (int i = 0; i < court->player_bars_length; ++i) {
+        court->court_field[court->right_player_pos + i][court->width - 1] = '|';
+    }
 
     res.code = OK;
     return res;
@@ -65,7 +68,7 @@ void update(court *court) {
     printf("\033[2J");
     printf("\033[?25l");
     while (true) {
-        printf("\033[H\033[2J");
+        printf("\033[H"); // \033[2J <- cause blinking in WSL if add to the printf
         char key = read_key();
         move_bat(key, court);
         draw_court(court);
@@ -78,7 +81,7 @@ void move_bat(char key, court *court) {
         court->left_player_pos = court->left_player_pos - 1 > 0 ? 
             court->left_player_pos - 1 : court->left_player_pos;
     } else if (key == 's') {
-        court->left_player_pos = court->left_player_pos + 1 < court->height - 1 ? 
+        court->left_player_pos = court->left_player_pos + 1 < court->height - court->player_bars_length ? 
             court->left_player_pos + 1 : court->left_player_pos;
     }
 
@@ -86,7 +89,7 @@ void move_bat(char key, court *court) {
         court->right_player_pos = court->right_player_pos - 1 > 0 ?
             court->right_player_pos - 1 : court->right_player_pos;
     } else if (key == 'l') {
-        court->right_player_pos = court->right_player_pos + 1 < court->height - 1 ?
+        court->right_player_pos = court->right_player_pos + 1 < court->height - court->player_bars_length ?
             court->right_player_pos + 1 : court->right_player_pos;
     }
 
