@@ -67,28 +67,45 @@ void update(court *court) {
     init_input();
     printf("\033[2J");
     printf("\033[?25l");
+    fflush(stdout);
+    bool w_pressed = false;
+    bool s_pressed = false;
+    bool o_pressed = false;
+    bool l_pressed = false;
     while (true) {
         printf("\033[H"); // \033[2J <- cause blinking in WSL if add to the printf
         char key = read_key();
-        move_bat(key, court);
+        w_pressed = (key == 'w');
+        s_pressed = (key == 's');
+        o_pressed = (key == 'o');
+        l_pressed = (key == 'l');
+        if (key == 'q') {
+            break;
+        }
+        move_bat(court, w_pressed, s_pressed, o_pressed, l_pressed);
         draw_court(court);
         usleep(40000);
     }
+    restore_terminal_settings();
+    printf("\033[?25h");
+    printf("\033[2J");
+    printf("\033[H");
+    fflush(stdout);
 }
 
-void move_bat(char key, court *court) {
-    if (key == 'w') {
+void move_bat(court *court, bool w, bool s, bool o, bool l) {
+    if (w) {
         court->left_player_pos = court->left_player_pos - 1 > 0 ? 
             court->left_player_pos - 1 : court->left_player_pos;
-    } else if (key == 's') {
+    } else if (s) {
         court->left_player_pos = court->left_player_pos + 1 < court->height - court->player_bars_length ? 
             court->left_player_pos + 1 : court->left_player_pos;
     }
 
-    if (key == 'o') {
+    if (o) {
         court->right_player_pos = court->right_player_pos - 1 > 0 ?
             court->right_player_pos - 1 : court->right_player_pos;
-    } else if (key == 'l') {
+    } else if (l) {
         court->right_player_pos = court->right_player_pos + 1 < court->height - court->player_bars_length ?
             court->right_player_pos + 1 : court->right_player_pos;
     }

@@ -36,7 +36,7 @@ result draw_left_player(court *court);
 result draw_right_player(court *court);
 result court_field_create(court *court);
 void update(court *court);
-void move_bat(char key, court *court);
+void move_bat(court *court, bool w, bool s, bool o, bool l);
 
 #endif // ENGINE_H 
 

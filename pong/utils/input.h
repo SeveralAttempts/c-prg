@@ -8,5 +8,7 @@
 
 void init_input();
 int read_key();
+void restore_terminal_settings();
+void save_terminal_settings();
 
 #endif // INPUT_H

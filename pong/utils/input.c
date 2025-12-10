@@ -1,7 +1,19 @@
 #include "input.h"
 
+struct termios original_termios;
+
+void save_terminal_settings() {
+    tcgetattr(STDIN_FILENO, &original_termios);
+}
+
+void restore_terminal_settings() {
+    tcsetattr(STDIN_FILENO, TCSANOW, &original_termios);
+}
+
 void init_input() {
-    struct termios t;
+    save_terminal_settings();
+
+    struct termios t = original_termios;
     tcgetattr(STDIN_FILENO, &t);
     t.c_lflag &= ~(ICANON | ECHO);    
     tcsetattr(STDIN_FILENO, TCSANOW, &t);
