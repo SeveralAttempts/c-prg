@@ -7,6 +7,10 @@ void draw_court(court *court) {
     }
 }
 
+result draw_ball(court *court) {
+    
+}
+
 result draw_left_player(court *court) {
     result res;
     res.code = ERROR;
