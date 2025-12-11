@@ -3,18 +3,18 @@
 void draw_court(court *court) {
     for (int i = 0; i < court->height; ++i) 
     {
-        printf("%s\n", court->court_field[i]);
+        mvprintw(i, 0, "%s\n", court->court_field[i]);
     }
+
+    refresh();
 }
 
-result draw_ball(court *court) {
-    
+result set_ball(court *court) {
+    court->court_field[court->ball_pos.y][court->ball_pos.x] = 'O';
+    return (result){OK};
 }
 
-result draw_left_player(court *court) {
-    result res;
-    res.code = ERROR;
-    
+result set_left_player(court *court) {
     for (int i = 0; i < court->height; ++i) {
         court->court_field[i][0] = '#';
     }
@@ -23,14 +23,10 @@ result draw_left_player(court *court) {
         court->court_field[court->left_player_pos + i][0] = '|';
     }
     
-    res.code = OK;
-    return res;
+    return (result){OK};
 }
 
-result draw_right_player(court *court) {
-    result res;
-    res.code = ERROR;
-    
+result set_right_player(court *court) {
     for (int i = 0; i < court->height; ++i) {
         court->court_field[i][court->width - 1] = '#';
     }
@@ -39,14 +35,10 @@ result draw_right_player(court *court) {
         court->court_field[court->right_player_pos + i][court->width - 1] = '|';
     }
 
-    res.code = OK;
-    return res;
+    return (result){OK};
 }
 
 result court_field_create(court *court) {
-    result res;
-    res.code = ERROR;
-
     char** field = malloc(court->height * sizeof(char*));
 
     for (int i = 0; i < court->width; ++i) {
@@ -63,45 +55,45 @@ result court_field_create(court *court) {
     }
 
     court->court_field = field;
-    res.code = OK;
-    return res;
+    return (result){OK};
 }
 
 void update(court *court) {
     init_input();
-    printf("\033[2J");
-    printf("\033[?25l");
-    fflush(stdout);
     bool w_pressed = false;
     bool s_pressed = false;
     bool o_pressed = false;
     bool l_pressed = false;
+    int w_timer = 0;
+    int s_timer = 0;
+    int o_timer = 0;
+    int l_timer = 0;
+    const int HOLD_DURATION = 200;
     while (true) {
-        printf("\033[H"); // \033[2J <- cause blinking in WSL if add to the printf
-        char key = read_key();
+        int key = read_key();
         w_pressed = (key == 'w');
         s_pressed = (key == 's');
         o_pressed = (key == 'o');
         l_pressed = (key == 'l');
-        if (key == 'q') {
+        if (key == 'q') { 
             break;
         }
+
         move_bat(court, w_pressed, s_pressed, o_pressed, l_pressed);
+        move_ball(court);
         draw_court(court);
-        usleep(40000);
+        napms(16);
     }
     restore_terminal_settings();
-    printf("\033[?25h");
-    printf("\033[2J");
-    printf("\033[H");
-    fflush(stdout);
 }
 
 void move_bat(court *court, bool w, bool s, bool o, bool l) {
     if (w) {
         court->left_player_pos = court->left_player_pos - 1 > 0 ? 
             court->left_player_pos - 1 : court->left_player_pos;
-    } else if (s) {
+    } 
+
+    if (s) {
         court->left_player_pos = court->left_player_pos + 1 < court->height - court->player_bars_length ? 
             court->left_player_pos + 1 : court->left_player_pos;
     }
@@ -109,12 +101,17 @@ void move_bat(court *court, bool w, bool s, bool o, bool l) {
     if (o) {
         court->right_player_pos = court->right_player_pos - 1 > 0 ?
             court->right_player_pos - 1 : court->right_player_pos;
-    } else if (l) {
+    } 
+
+    if (l) {
         court->right_player_pos = court->right_player_pos + 1 < court->height - court->player_bars_length ?
             court->right_player_pos + 1 : court->right_player_pos;
     }
 
-    draw_left_player(court);
-    draw_right_player(court);
+    set_left_player(court);
+    set_right_player(court);
 }
 
+void move_ball(court *court) {
+    set_ball(court);   
+}
