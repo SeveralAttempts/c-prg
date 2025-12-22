@@ -7,8 +7,8 @@ int main(int argc, char *argv[])
     // Court setup
     court court;
     court.width = 150;
-    court.height = 35;
-    court.player_bars_length = 5;
+    court.height = 36;
+    court.player_bars_length = 9;
     court.left_player_pos = court.height / 2;
     court.right_player_pos = court.height / 2;
     court.ball_pos.x = court.width / 2;

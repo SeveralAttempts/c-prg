@@ -60,26 +60,14 @@ result court_field_create(court *court) {
 
 void update(court *court) {
     init_input();
-    bool w_pressed = false;
-    bool s_pressed = false;
-    bool o_pressed = false;
-    bool l_pressed = false;
-    int w_timer = 0;
-    int s_timer = 0;
-    int o_timer = 0;
-    int l_timer = 0;
     const int HOLD_DURATION = 200;
     while (true) {
         int key = read_key();
-        w_pressed = (key == 'w');
-        s_pressed = (key == 's');
-        o_pressed = (key == 'o');
-        l_pressed = (key == 'l');
         if (key == 'q') { 
             break;
         }
 
-        move_bat(court, w_pressed, s_pressed, o_pressed, l_pressed);
+        move_bat(court, key);
         move_ball(court);
         draw_court(court);
         napms(16);
@@ -87,23 +75,43 @@ void update(court *court) {
     restore_terminal_settings();
 }
 
-void move_bat(court *court, bool w, bool s, bool o, bool l) {
-    if (w) {
-        court->left_player_pos = court->left_player_pos - 1 > 0 ? 
-            court->left_player_pos - 1 : court->left_player_pos;
+void move_bat(court *court, int key) {
+    int chunk = court->height / court->player_bars_length;
+
+    if (key == 'q') {
+        court->left_player_pos =  chunk - chunk + 1;
     } 
 
-    if (s) {
-        court->left_player_pos = court->left_player_pos + 1 < court->height - court->player_bars_length ? 
-            court->left_player_pos + 1 : court->left_player_pos;
+    if (key == 'w') {
+        court->left_player_pos = chunk * 2 - chunk; // TODO: finish the function
     }
 
-    if (o) {
+    if (key == 'e') {
         court->right_player_pos = court->right_player_pos - 1 > 0 ?
             court->right_player_pos - 1 : court->right_player_pos;
     } 
 
-    if (l) {
+    if (key == 'r') {
+        court->right_player_pos = court->right_player_pos + 1 < court->height - court->player_bars_length ?
+            court->right_player_pos + 1 : court->right_player_pos;
+    }
+
+    if (key == 'u') {
+        court->left_player_pos = court->left_player_pos - 1 > 0 ? 
+            court->left_player_pos - 1 : court->left_player_pos;
+    } 
+
+    if (key == 'i') {
+        court->left_player_pos = court->left_player_pos + 1 < court->height - court->player_bars_length ? 
+            court->left_player_pos + 1 : court->left_player_pos;
+    }
+
+    if (key == 'o') {
+        court->right_player_pos = court->right_player_pos - 1 > 0 ?
+            court->right_player_pos - 1 : court->right_player_pos;
+    } 
+
+    if (key == 'p') {
         court->right_player_pos = court->right_player_pos + 1 < court->height - court->player_bars_length ?
             court->right_player_pos + 1 : court->right_player_pos;
     }
