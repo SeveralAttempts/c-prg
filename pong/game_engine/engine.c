@@ -63,7 +63,7 @@ void update(court *court) {
     const int HOLD_DURATION = 200;
     while (true) {
         int key = read_key();
-        if (key == 'q') { 
+        if (key == '1') { 
             break;
         }
 
@@ -76,44 +76,38 @@ void update(court *court) {
 }
 
 void move_bat(court *court, int key) {
-    int chunk = court->height / court->player_bars_length;
+    int chunk = court->player_bars_length;
 
     if (key == 'q') {
-        court->left_player_pos =  chunk - chunk + 1;
+        court->left_player_pos = 1;
     } 
 
     if (key == 'w') {
-        court->left_player_pos = chunk * 2 - chunk; // TODO: finish the function
+        court->left_player_pos = chunk + 1; // TODO: finish the function
     }
 
     if (key == 'e') {
-        court->right_player_pos = court->right_player_pos - 1 > 0 ?
-            court->right_player_pos - 1 : court->right_player_pos;
+        court->left_player_pos = chunk * 2 + 1;
     } 
 
     if (key == 'r') {
-        court->right_player_pos = court->right_player_pos + 1 < court->height - court->player_bars_length ?
-            court->right_player_pos + 1 : court->right_player_pos;
+        court->left_player_pos = chunk * 3 + 1;
     }
 
     if (key == 'u') {
-        court->left_player_pos = court->left_player_pos - 1 > 0 ? 
-            court->left_player_pos - 1 : court->left_player_pos;
+        court->right_player_pos = 1;
     } 
 
     if (key == 'i') {
-        court->left_player_pos = court->left_player_pos + 1 < court->height - court->player_bars_length ? 
-            court->left_player_pos + 1 : court->left_player_pos;
+        court->right_player_pos = chunk + 1;
     }
 
     if (key == 'o') {
-        court->right_player_pos = court->right_player_pos - 1 > 0 ?
-            court->right_player_pos - 1 : court->right_player_pos;
+        court->right_player_pos = chunk * 2 + 1;
     } 
 
     if (key == 'p') {
-        court->right_player_pos = court->right_player_pos + 1 < court->height - court->player_bars_length ?
-            court->right_player_pos + 1 : court->right_player_pos;
+        court->right_player_pos = chunk * 3 + 1;
     }
 
     set_left_player(court);
