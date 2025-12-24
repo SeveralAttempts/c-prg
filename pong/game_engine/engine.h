@@ -7,12 +7,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <math.h>
 
 typedef struct 
 {
-    int x;
+    float x;
     int y;
-    bool is_left;
+    int dx;
+    int dy;
+    double speed;
 } ball_position;
 
 typedef struct 
