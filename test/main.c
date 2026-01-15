@@ -16,6 +16,6 @@ void difference_between_two_arrays() {
 }
 
 int main(int argc, char *argv[]) {
-    
+    printf("Done");
     return EXIT_SUCCESS;
 }
